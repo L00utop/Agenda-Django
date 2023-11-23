@@ -1,0 +1,190 @@
+{% load static %}
+<style>
+  .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+
+  .btn:hover {
+    background-color: #e0e0e0;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), -6px -6px 15px rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: #f0f0f0;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.9);
+  }
+
+  .form-control:focus {
+    outline: none;
+    /* Removendo a borda de foco padrão */
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), -6px -6px 15px rgba(255, 255, 255, 0.9);
+    /* Estilo enquanto o input está em foco */
+  }
+
+  .btn-danger {
+    padding: 5px 10px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), -2px -2px 5px rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+  }
+
+  .btn-danger:hover {
+    background-color: #e0e0e0;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4), -3px -3px 8px rgba(255, 255, 255, 0.9);
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  .neuromorphic-input {
+    border: none;
+    border-radius: 8px;
+    margin-right: 8px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    font-size: 13px;
+    box-shadow: 5px 5px 15px #bebebe,
+      -5px -5px 15px #ffffff;
+    transition: transform 0.3s ease-in-out;
+
+    width: 300px;
+  }
+
+  .neuromorphic-input:focus {
+    outline: none;
+  }
+
+  .neuromorphic-input:hover {
+    background-color: #e0e0e0;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), -6px -6px 15px rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .neuromorphic-button {
+    border: none;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    box-shadow: 5px 5px 15px #bebebe,
+      -5px -5px 15px #ffffff;
+    cursor: pointer;
+    font-size: 13px;
+    transition: transform 0.3s ease-in-out;
+    width: 100px;
+  }
+
+  .neuromorphic-button:hover {
+    background-color: #e0e0e0;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), -6px -6px 15px rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .form-label {
+    font-size: 16px;
+    font-weight: bold;
+  }
+</style>
+
+<div class="container mt-5">
+  <div style="display: flex; align-items: center; justify-content: space-between;">
+    <h2 class="mb-4">Criar cadastro</h2>
+    <form method="GET" action="{% url 'list_cadastro' %}" style="display: flex; align-items: center;">
+      <input type="text" name="q_observacoes" placeholder="Pesquisar Observações" class="neuromorphic-input">
+      <input type="text" name="q_informacoes" placeholder="Pesquisar Informações" class="neuromorphic-input">
+      <button type="submit" class="neuromorphic-button">Pesquisar</button>
+    </form>
+  </div>
+</div>
+
+<form action="{% url 'save_cadastro' %}" method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="nome" class="form-label">Nome:</label>
+    <input type="text" class="form-control" placeholder="Nome" id="nome" name="nome">
+  </div>
+  <div class="mb-3">
+    <label for="endereco" class="form-label">Endereço:</label>
+    <input type="text" class="form-control" placeholder="Endereço" id="endereco" name="endereco">
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="cidade" class="form-label">Cidade:</label>
+      <input type="text" class="form-control" placeholder="Cidade" id="cidade" name="cidade">
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="bairro" class="form-label">Bairro:</label>
+      <input type="text" class="form-control" placeholder="Bairro" id="bairro" name="bairro">
+    </div>
+    <div class="col-md-6">
+      <label for="cep" class="form-label">CEP:</label>
+      <input type="text" class="form-control" placeholder="CEP" id="cep" name="cep">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="cpf" class="form-label">CPF:</label>
+      <input type="text" class="form-control" placeholder="CPF" id="cpf" name="cpf">
+    </div>
+    <div class="col-md-6">
+      <label for="cnpj" class="form-label">CNPJ:</label>
+      <input type="text" class="form-control" placeholder="CNPJ" id="cnpj" name="cnpj">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="ie" class="form-label">IE:</label>
+      <input type="text" class="form-control" placeholder="Inscrição Estadual" id="ie" name="ie">
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="telefone" class="form-label">Telefone:</label>
+      <input type="text" class="form-control" placeholder="Telefone" id="telefone" name="telefone">
+    </div>
+
+    <div class="col-md-6">
+      <label for="whatsapp" class="form-label">WhatsApp:</label>
+      <input type="text" class="form-control" placeholder="WhatsApp" id="whatsapp" name="whatsapp">
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="celular" class="form-label">Celular:</label>
+    <input type="text" class="form-control" placeholder="Celular" id="celular" name="celular">
+  </div>
+
+  <div class="mb-3">
+    <label for="email" class="form-label">Email:</label>
+    <input type="text" class="form-control" placeholder="Email" id="email" name="email">
+  </div>
+
+  <div class="mb-3">
+    <label for="observacoes" class="form-label">Observações:</label>
+    <input type="text" class="form-control" placeholder="Observações" id="observacoes" name="observacoes">
+  </div>
+  <button type="submit" class="btn">Salvar Dados</button>
+</form>
+</div>
+<br>
+<br>

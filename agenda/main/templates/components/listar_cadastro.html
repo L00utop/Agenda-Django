@@ -1,0 +1,438 @@
+{% load static %}
+<style>
+.neuromorphic-card {
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin-bottom: 20px;
+  border: none;
+  width: 100%;
+  
+}
+ 
+.card-title {
+  font-size: 22px;
+  font-weight: bolder;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.info-label{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.info-value, .cadastro-list {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.info-row{
+  margin-bottom: 10px
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.step-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.step-links a {
+  text-decoration: none;
+  padding: 15px 25px;
+  border-radius: 12px;
+  margin: 0 15px;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 13px; 
+  box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3),
+              -6px -6px 15px rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+}
+
+.step-links a:hover {
+  background-color: #e0e0e0;
+  box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), -6px -6px 15px rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+.current {
+  margin: 0 18px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.btn-container {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.btn-add {
+  padding: 12px 20px;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  color: #333;
+  text-decoration: none;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2),
+              -4px -4px 10px rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn-add i {
+  margin-right: 8px;
+}
+
+.btn-add:hover {
+  background-color: #e0e0e0;
+  box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), -6px -6px 15px rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+.expand-toggle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: -30px;
+  margin-right: 10px;
+}
+
+.icon-angle-down {
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.3s;
+  padding: 5px;
+}
+
+.icon-rotate {
+  transform: rotate(180deg);
+}
+
+.fa-pen-to-square, .fa-trash{
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  margin-right: 8px;
+}
+
+.modal-backdrop {
+   display: none;
+}
+
+.modal-content {
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.393), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.modal-dialog {
+  max-width: 90%; 
+  margin: 1.75rem auto;
+
+}
+
+.modal-header {
+  background-color: #f4f4f4;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+}
+
+.modal-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+
+}
+
+.btn-primary {
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  color: #333;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #e0e0e0;
+  box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), -6px -6px 15px rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #f0f0f0;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.9);
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), -6px -6px 15px rgba(255, 255, 255, 0.9);
+}
+
+</style>
+
+<div style="text-align: right; margin-bottom: 20px;">
+  <a href="{% url 'home' %}" class="btn btn-add">
+    &laquo; Voltar
+  </a>
+</div>
+
+{% for cadastro in cadastros %}
+<div class="neuromorphic-card">
+  <div class="card-body">
+    <div style="display: flex; justify-content: space-between; align-items: center; ">
+      <div>
+        <h3 class="card-title">{{ cadastro.nome }}</h3>
+      </div>
+      <div class="icon-edit">
+        <i class="fas fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#editModal-{{ cadastro.Id }}"></i>
+        <i class="fas fa-trash"  data-cadastro-id="{{ cadastro.Id }}"></i>
+        <br>
+        <br>
+    </div>
+  </div>
+    <div class="card-info">
+      <div class="info-row">
+        {% if cadastro.cnpj !=  '' %}
+        <span class="info-label">CNPJ:</span>
+        <span class="info-value" style="margin-right: 8px;">{{ cadastro.cnpj }}</span>
+        {% endif %}
+
+        {% if cadastro.cpf %}
+          <span class="info-label">CPF:</span>
+          <span class="info-value">{{ cadastro.cpf }}</span>
+        {% endif %}
+      </div>
+      {% if cadastro.ie %}
+      <div class="info-row">
+        <span class="info-label">IE:</span>
+        <span class="info-value">{{ cadastro.ie }}</span>
+      </div>
+      {% endif %}
+
+      {% if cadastro.telefone %}
+      <div class="info-row">
+        <span class="info-label">Telefone:</span>
+        <span class="info-value">{{ cadastro.telefone }}</span>
+      </div>
+      {% endif %}
+      {% if cadastro.celular %}
+      <div class="info-row">
+        <span class="info-label">Celular:</span>
+        <span class="info-value">{{ cadastro.celular }}</span>
+      </div>
+      {% endif %}
+      <div class="expand-toggle">
+        <i class="fa-solid fa-angle-down icon-angle-down"></i>
+      </div>
+    </div>
+
+    <div class="additional-info" style="display: none;">
+      <div class="info-row">
+        <span class="info-value">
+          {% if cadastro.email %}
+          <div class="mb-3">
+            <strong>Email:</strong> {{ cadastro.email }}
+          </div>
+          {% endif %}
+          {% if cadastro.endereco %}
+          <div class="mb-3">
+            <strong>Endereço:</strong> {{ cadastro.endereco }}
+          </div>
+          {% endif %}
+
+          {% if cadastro.cidade %}
+          <div class="mb-3">
+            <strong>Cidade:</strong> {{ cadastro.cidade }}
+          </div>
+          {% endif %}
+
+          {% if cadastro.bairro %}
+          <div class="mb-3">
+            <strong>Bairro:</strong> {{ cadastro.bairro }}
+          </div>
+          {% endif %}
+          
+          {% if cadastro.cep %}
+          <div class="mb-3">
+            <strong>CEP:</strong> {{ cadastro.cep }}
+          </div>
+          {% endif %}
+        
+          {% if cadastro.whatsapp %}
+          <div class="mb-3">
+            <strong>Whatsapp:</strong> {{ cadastro.whatsapp }}
+          </div>
+          {% endif %}
+
+          {% for observacao in cadastro.observacoes_set.all %}
+          {% if observacao.observacoes%}
+          <strong >Observações:</strong>
+          <div class="cadastro-list">
+            <span>- {{ observacao.observacoes }}</span>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editModal-{{ cadastro.Id }}" tabindex="-1" aria-labelledby="editModalLabel-{{ cadastro.Id }}" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel-{{ cadastro.Id }}">Editar Cadastro</h5>
+        <button type="button" class="btn-close" style="font-size: large; margin-right: 10px;" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+    
+        <form id="editForm-{{ cadastro.Id }}" method="post" action="{% url 'edit_cadastro' %}">
+          {% csrf_token %}
+      
+          <input type="hidden" id="editId" name="editId" value="{{ cadastro.Id }}">
+
+          <div class="mb-3">
+            <label for="editNome" class="form-label">Nome:</label>
+            <input type="text" class="form-control" id="editNome" name="editNome" value="{{ cadastro.nome }}">
+          </div>
+   
+          <div class="mb-3">
+            <label for="editCPF" class="form-label">CPF:</label>
+            <input type="text" class="form-control" id="editCPF" name="editCPF" value="{{ cadastro.cpf }}">
+          </div>
+
+          <div class="mb-3">
+            <label for="editCNPJ" class="form-label">CNPJ:</label>
+            <input type="text" class="form-control" id="editCNPJ" name="editCNPJ" value="{{ cadastro.cnpj }}">
+          </div>
+          <div class="mb-3">
+            <label for="editIE" class="form-label">IE:</label>
+            <input type="text" class="form-control" id="editIE" name="editIE" value="{{ cadastro.ie }}">
+          </div>
+          <div class="mb-3">
+            <label for="editEndereco" class="form-label">Endereço:</label>
+            <input type="text" class="form-control" id="editEndereco" name="editEndereco" value="{{ cadastro.endereco }}">
+          </div>
+          <div class="mb-3">
+            <label for="editIE" class="form-label">Cidade:</label>
+            <input type="text" class="form-control" id="editCidade" name="editCidade" value="{{ cadastro.cidade }}">
+          </div>
+          <div class="mb-3">
+            <label for="editBairro" class="form-label">Bairro:</label>
+            <input type="text" class="form-control" id="editBairro" name="editBairro" value="{{ cadastro.bairro }}">
+          </div>
+          <div class="mb-3">
+            <label for="editCEP" class="form-label">CEP:</label>
+            <input type="text" class="form-control" id="editCEP" name="editCEP" value="{{ cadastro.cep }}">
+          </div>
+          <div class="mb-3">
+            <label for="editTelefone" class="form-label">Telefone:</label>
+            <input type="text" class="form-control" id="editTelefone" name="editTelefone" value="{{ cadastro.telefone }}">
+          </div>
+          <div class="mb-3">
+            <label for="editCelular" class="form-label">Celular:</label>
+            <input type="text" class="form-control" id="editCelular" name="editCelular" value="{{ cadastro.celular }}">
+          </div>  
+          <div class="mb-3">
+            <label for="editCelular" class="form-label">WhatsApp:</label>
+            <input type="text" class="form-control" id="editWhatsapp" name="editWhatsapp" value="{{ cadastro.whatsapp }}">
+          </div>  
+
+          <div class="mb-3">
+            <label for="editEmail" class="form-label">Email:</label>
+            <input type="text" class="form-control" id="editEmail" name="editEmail" value="{{ cadastro.email }}">
+          </div>
+          
+          {% for observacao in cadastro.observacoes_set.all %}
+          <div class="mb-3">
+            <label for="editEmail" class="form-label">Observações:</label>
+            <input type="text" class="form-control" id="editObservacoes" name="editObservacoes" value="{{ observacao.observacoes }}">
+          </div>
+          {% endfor %}
+          <button type="submit" class="btn btn-add mt-3">
+           
+            <i class="fas fa-save"></i> Salvar
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+{% if cadastros.paginator.num_pages > 1 %}
+  <div class="pagination">
+      <span class="step-links mb-5">
+          {% if cadastros.has_previous %}
+              <a href="?page=1">&laquo; Primeira</a>
+              <a href="?page={{ cadastros.previous_page_number }}">Anterior</a>
+          {% endif %}
+
+          <span class="current">
+              Página {{ cadastros.number }} de {{ cadastros.paginator.num_pages }}.
+          </span>
+
+          {% if cadastros.has_next %}
+              <a href="?page={{ cadastros.next_page_number }}">Próxima</a>
+              <a href="?page={{ cadastros.paginator.num_pages }}">Última &raquo;</a>
+          {% endif %}
+      </span>
+  </div>
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('.expand-toggle').on('click', function() {
+      $(this).closest('.card-body').find('.additional-info').slideToggle(200);
+      $(this).find('.icon-angle-down').toggleClass('icon-rotate'); 
+    });
+  });
+</script>
+
+
+<script>
+  $(document).ready(function() {
+    $('.fa-trash').on('click', function() {
+        const cadastroId = $(this).data('cadastro-id');
+        if (confirm('Tem certeza de que deseja excluir este cadastro?')) {
+            $.ajax({
+                type: 'POST',
+                url: '/excluir-cadastro/',  // Substitua pela URL correta da sua view de exclusão
+                data: {
+                    cadastro_id: cadastroId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'  // Adicione o token CSRF
+                },
+                success: function(response) {
+                    window.location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+});
+</script>
